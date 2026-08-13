@@ -19,3 +19,17 @@ buildscript {
 }
 
 apply plugin: "com.facebook.react.rootproject"
+
+// react-native-google-mobile-ads pins play-services-ads 25.4.0, which ships
+// Kotlin metadata newer than this project's Kotlin Gradle plugin can read.
+// Pin an older play-services-ads release built against a compatible Kotlin
+// version until the RN Gradle plugin / other native modules catch up. This
+// must apply to every subproject since react-native-google-mobile-ads
+// resolves the dependency inside its own module, not the app module.
+subprojects {
+    configurations.all {
+        resolutionStrategy {
+            force "com.google.android.gms:play-services-ads:25.2.0" // pinned: see comment above
+        }
+    }
+}
